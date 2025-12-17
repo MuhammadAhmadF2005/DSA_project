@@ -6,6 +6,7 @@
 #include "SortSearch.h"
 #include "Tree.h"
 #include "Heap.h"
+#include "Analytics.h"
 
 using namespace std;
 
@@ -51,6 +52,16 @@ void displayMainMenu()
     cout << "30. Merge Sort\n";
     cout << "31. Quick Sort\n";
     cout << "32. Heap Sort\n";
+    cout << "\n--- Analytics & Reporting (Advanced DSA) ---\n";
+    cout << "33. Record Station Visit (Frequency Count)\n";
+    cout << "34. Find Most Crowded Station\n";
+    cout << "35. Display Station Frequencies\n";
+    cout << "36. Find Busiest Route\n";
+    cout << "37. Analyze Route Weights\n";
+    cout << "38. Assign Fastest Vehicle (Min-Heap)\n";
+    cout << "39. Predict Traffic Density (Heap Sort)\n";
+    cout << "40. Analyze Daily Usage Trends (BST)\n";
+    cout << "41. Generate Comprehensive Report\n";
     cout << "\n0. Exit\n";
     cout << "Enter choice: ";
 }
@@ -63,6 +74,8 @@ int main()
     HistoryStack history;
     BST bst;
     MinHeap heap(100);
+    MinHeap trafficHeap(100); // For traffic density prediction
+    Analytics analytics;
 
     int choice;
     do
@@ -385,6 +398,39 @@ int main()
             delete[] arr;
             break;
         }
+        case 33:
+        {
+            int stationID;
+            cout << "Enter Station ID to record visit: ";
+            cin >> stationID;
+            analytics.recordStationVisit(stationID);
+            cout << "Visit recorded for station " << stationID << ".\n";
+            break;
+        }
+        case 34:
+            analytics.findMostCrowdedStation(city);
+            break;
+        case 35:
+            analytics.displayStationFrequencies();
+            break;
+        case 36:
+            analytics.findBusiestRoute(city);
+            break;
+        case 37:
+            analytics.analyzeRouteWeights(city);
+            break;
+        case 38:
+            analytics.assignFastestVehicle(heap);
+            break;
+        case 39:
+            analytics.predictTrafficDensity(trafficHeap);
+            break;
+        case 40:
+            analytics.analyzeDailyUsageTrends(bst);
+            break;
+        case 41:
+            analytics.generateReport(city, heap, bst);
+            break;
         }
     } while (choice != 0);
 

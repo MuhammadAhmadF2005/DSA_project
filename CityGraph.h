@@ -362,4 +362,58 @@ public:
             }
         }
     }
+
+    // Helper method for analytics - get busiest route
+    void getBusiestRoute(int &src, int &dest, int &maxWeight)
+    {
+        maxWeight = 0;
+        src = dest = -1;
+
+        for (int i = 0; i < MAX_STATIONS; i++)
+        {
+            if (stations[i] != nullptr)
+            {
+                Route *temp = adjList[i];
+                while (temp)
+                {
+                    if (i < temp->destID && temp->weight > maxWeight) // Avoid duplicates
+                    {
+                        maxWeight = temp->weight;
+                        src = i;
+                        dest = temp->destID;
+                    }
+                    temp = temp->next;
+                }
+            }
+        }
+    }
+
+    // Get route statistics for analytics
+    void getRouteStatistics(int routeCounts[], int routeWeights[], int &totalRoutes)
+    {
+        totalRoutes = 0;
+        for (int i = 0; i < MAX_STATIONS; i++)
+        {
+            routeCounts[i] = 0;
+            routeWeights[i] = 0;
+        }
+
+        for (int i = 0; i < MAX_STATIONS; i++)
+        {
+            if (stations[i] != nullptr)
+            {
+                Route *temp = adjList[i];
+                while (temp)
+                {
+                    if (i < temp->destID) // Count each edge once
+                    {
+                        routeCounts[totalRoutes] = 1;
+                        routeWeights[totalRoutes] = temp->weight;
+                        totalRoutes++;
+                    }
+                    temp = temp->next;
+                }
+            }
+        }
+    }
 };
