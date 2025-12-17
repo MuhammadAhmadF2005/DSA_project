@@ -75,6 +75,76 @@ public:
     }
 
     // Dijkstra's Shortest Path
+    void DFS(int startID)
+    {
+        bool visited[MAX_STATIONS] = {false};
+        cout << "DFS Traversal: ";
+        DFSUtil(startID, visited);
+        cout << endl;
+    }
+
+private:
+    void DFSUtil(int v, bool visited[])
+    {
+        visited[v] = true;
+        cout << v << " ";
+
+        Route *temp = adjList[v];
+        while (temp)
+        {
+            if (!visited[temp->destID])
+                DFSUtil(temp->destID, visited);
+            temp = temp->next;
+        }
+    }
+
+    bool isCyclicUtil(int v, bool visited[], int parent)
+    {
+        visited[v] = true;
+        Route *temp = adjList[v];
+        while (temp)
+        {
+            if (!visited[temp->destID])
+            {
+                if (isCyclicUtil(temp->destID, visited, v))
+                    return true;
+            }
+            else if (temp->destID != parent)
+                return true;
+            temp = temp->next;
+        }
+        return false;
+    }
+
+    struct Edge
+    {
+        int src, dest, weight;
+    };
+
+    int findParent(int parent[], int i)
+    {
+        if (parent[i] == i)
+            return i;
+        return findParent(parent, parent[i]);
+    }
+
+    void unionSets(int parent[], int rank[], int x, int y)
+    {
+        int xroot = findParent(parent, x);
+        int yroot = findParent(parent, y);
+
+        if (rank[xroot] < rank[yroot])
+            parent[xroot] = yroot;
+        else if (rank[xroot] > rank[yroot])
+            parent[yroot] = xroot;
+        else
+        {
+            parent[yroot] = xroot;
+            rank[xroot]++;
+        }
+    }
+
+public:
     void Dijkstra(int start, int end)
     {
         int dist[MAX_STATIONS];
@@ -127,7 +197,6 @@ public:
         else
         {
             cout << "Shortest Distance: " << dist[end] << "\nPath: ";
-            // Backtrack path could be printed here using parent array
             int curr = end;
             while (curr != -1)
             {
@@ -135,6 +204,162 @@ public:
                 curr = parent[curr];
             }
             cout << "Start\n";
+        }
+    }
+
+    bool detectCycle()
+    {
+        bool visited[MAX_STATIONS] = {false};
+        for (int i = 0; i < MAX_STATIONS; i++)
+        {
+            if (stations[i] != nullptr && !visited[i])
+            {
+                if (isCyclicUtil(i, visited, -1))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    void MST_Kruskal()
+    {
+        // Collect all edges
+        Edge edges[1000];
+        int edgeCount = 0;
+        for (int i = 0; i < MAX_STATIONS; i++)
+        {
+            if (stations[i] != nullptr)
+            {
+                Route *temp = adjList[i];
+                while (temp)
+                {
+                    if (i < temp->destID) // Avoid duplicates in undirected graph
+                    {
+                        edges[edgeCount].src = i;
+                        edges[edgeCount].dest = temp->destID;
+                        edges[edgeCount].weight = temp->weight;
+                        edgeCount++;
+                    }
+                    temp = temp->next;
+                }
+            }
+        }
+
+        // Sort edges by weight (simple bubble sort)
+        for (int i = 0; i < edgeCount - 1; i++)
+        {
+            for (int j = 0; j < edgeCount - i - 1; j++)
+            {
+                if (edges[j].weight > edges[j + 1].weight)
+                {
+                    Edge temp = edges[j];
+                    edges[j] = edges[j + 1];
+                    edges[j + 1] = temp;
+                }
+            }
+        }
+
+        int parent[MAX_STATIONS];
+        int rank[MAX_STATIONS] = {0};
+        for (int i = 0; i < MAX_STATIONS; i++)
+            parent[i] = i;
+
+        cout << "MST Edges (Kruskal's Algorithm):\n";
+        int mstWeight = 0;
+        for (int i = 0; i < edgeCount; i++)
+        {
+            int x = findParent(parent, edges[i].src);
+            int y = findParent(parent, edges[i].dest);
+
+            if (x != y)
+            {
+                cout << edges[i].src << " - " << edges[i].dest << " (weight: " << edges[i].weight << ")\n";
+                mstWeight += edges[i].weight;
+                unionSets(parent, rank, x, y);
+            }
+        }
+        cout << "Total MST Weight: " << mstWeight << "\n";
+    }
+
+    void deleteStation(int id)
+    {
+        if (stations[id] == nullptr)
+        {
+            cout << "Station not found.\n";
+            return;
+        }
+
+        // Remove all routes connected to this station
+        Route *temp = adjList[id];
+        while (temp)
+        {
+            Route *next = temp->next;
+            deleteRoute(id, temp->destID);
+            temp = next;
+        }
+        adjList[id] = nullptr;
+
+        delete stations[id];
+        stations[id] = nullptr;
+        stationCount--;
+        cout << "Station " << id << " deleted.\n";
+    }
+
+    void deleteRoute(int src, int dest)
+    {
+        // Remove edge src -> dest
+        Route *prev = nullptr;
+        Route *curr = adjList[src];
+        while (curr)
+        {
+            if (curr->destID == dest)
+            {
+                if (prev == nullptr)
+                    adjList[src] = curr->next;
+                else
+                    prev->next = curr->next;
+                delete curr;
+                break;
+            }
+            prev = curr;
+            curr = curr->next;
+        }
+
+        // Remove edge dest -> src (undirected)
+        prev = nullptr;
+        curr = adjList[dest];
+        while (curr)
+        {
+            if (curr->destID == src)
+            {
+                if (prev == nullptr)
+                    adjList[dest] = curr->next;
+                else
+                    prev->next = curr->next;
+                delete curr;
+                break;
+            }
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+
+    void displayAllStations()
+    {
+        cout << "Connected Stations:\n";
+        for (int i = 0; i < MAX_STATIONS; i++)
+        {
+            if (stations[i] != nullptr)
+            {
+                cout << "Station " << i << " (" << stations[i]->name << ") -> ";
+                Route *temp = adjList[i];
+                while (temp)
+                {
+                    cout << temp->destID << "(" << temp->weight << ") ";
+                    temp = temp->next;
+                }
+                cout << "\n";
+            }
         }
     }
 };

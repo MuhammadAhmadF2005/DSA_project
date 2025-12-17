@@ -1,2 +1,65 @@
-tempCodeRunnerFile.cpp 
-tempCodeRunnerFile.exe
+# Compiled Object files
+*.o
+*.obj
+*.lo
+*.slo
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+*.bin
+ITNMS_Project
+ITNMS_Project.exe
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build directories
+build/
+Build/
+bin/
+Bin/
+obj/
+Obj/
+
+# Temporary files
+*.tmp
+*.temp
+tempCodeRunnerFile.*
+*.bak
+*.backup
+
+# Log files
+*.log
+
+# PDF files (if you don't want to track them)
+# Project CS221.pdf
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+

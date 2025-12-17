@@ -54,5 +54,27 @@ public:
         cout << "Vehicle not found.\n";
     }
 
-    // Note: Delete function is similar to Linked List delete
+    void remove(int id)
+    {
+        int idx = hashFunction(id);
+        Vehicle *prev = nullptr;
+        Vehicle *curr = table[idx];
+
+        while (curr != nullptr)
+        {
+            if (curr->id == id)
+            {
+                if (prev == nullptr)
+                    table[idx] = curr->next;
+                else
+                    prev->next = curr->next;
+                delete curr;
+                cout << "Vehicle " << id << " removed.\n";
+                return;
+            }
+            prev = curr;
+            curr = curr->next;
+        }
+        cout << "Vehicle not found.\n";
+    }
 };
