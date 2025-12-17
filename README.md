@@ -67,21 +67,72 @@ For each algorithm, the implementation must include:
   * [cite_start]Space complexity[cite: 64].
   * [cite_start]Sample dataset execution[cite: 65].
 
+#### 6\. Binary Search Tree Module
+
+  * Insert, search, and remove operations
+  * In-order traversal for displaying sorted data
+  * Used for storing and managing route or station metadata
+
+#### 7\. Heap (Priority Queue) Module
+
+  * Min-Heap implementation for priority-based operations
+  * Insert and extract minimum operations
+  * Used for fastest vehicle assignment and traffic prioritization
+
+#### 8\. Analytics & Reporting Module
+
+  * Station visit frequency tracking
+  * Most crowded station identification
+  * Busiest route analysis
+  * Route weight analysis
+  * Traffic density prediction using heap sort
+  * Daily usage trends analysis using BST
+  * Comprehensive reporting system
+
+### 📁 Project Structure
+
+The project uses a header-only architecture with all implementations in header files:
+
+- `main.cpp` - Main program entry point and menu system
+- `CityGraph.h` - Graph operations (stations, routes, BFS, DFS, Dijkstra, MST, cycle detection)
+- `VehicleMap.h` - Hash table implementation for vehicle management
+- `CoreDS.h` - Core data structures (Queue, Stack)
+- `SortSearch.h` - Searching and sorting algorithms
+- `Tree.h` - Binary Search Tree (BST) implementation
+- `Heap.h` - Min-Heap/Priority Queue implementation
+- `Analytics.h` - Advanced analytics and reporting features
+- `Models.h` - Data models and structures
+
 ### 💻 Instructions to Run the Project
 
 1.  **Clone the Repository:**
     ```bash
     git clone [repository_url]
-    cd ITNMS
+    cd cs221_project
     ```
+
 2.  **Compilation:**
-    Compile all source files together using a C++ compiler (like g++):
+    Compile the main source file using a C++ compiler (like g++):
     ```bash
-    g++ main.cpp CityGraph.cpp VehicleMap.cpp CoreDS.cpp SortSearch.cpp -o ITNMS_Project
+    g++ main.cpp -o ITNMS_Project
     ```
-    (Ensure you compile all necessary `.cpp` files if you follow a modular structure.)
+    On Windows (using MinGW or similar):
+    ```bash
+    g++ main.cpp -o ITNMS_Project.exe
+    ```
+
 3.  **Execution:**
+    On Linux/Mac:
     ```bash
     ./ITNMS_Project
     ```
-4.  **Usage:** Follow the menu prompts to test the core functions like adding stations, creating routes, calculating the shortest path, and managing the passenger queue.
+    On Windows:
+    ```bash
+    ITNMS_Project.exe
+    ```
+    or
+    ```bash
+    .\ITNMS_Project.exe
+    ```
+
+4.  **Usage:** Follow the menu prompts to test the core functions like adding stations, creating routes, calculating the shortest path, managing the passenger queue, and exploring all implemented data structures and algorithms.

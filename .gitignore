@@ -55,11 +55,11 @@ tempCodeRunnerFile.*
 # Log files
 *.log
 
-# PDF files (if you don't want to track them)
-# Project CS221.pdf
+# PDF files
+*.pdf
 
-# Documentation/Checklist files
-SUBMISSION_CHECKLIST.md
+# Documentation/Checklist files, no need to push 
+SUBMISSION_CHECKLIST.md 
 
 # OS files
 Thumbs.db
