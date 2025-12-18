@@ -225,10 +225,10 @@ Use the interactive menu to:
 
 ## 👨‍💻 Author
 
-**Muhammad Ahmad**
-**Raja Hamza**
-**Muhammad Haider Ali**
-**Muhammad Zaid**
+* **Muhammad Ahmad**
+* **Raja Hamza**
+* **Muhammad Haider Ali**
+* **Muhammad Zaid**
 
 CS | GIKI
 
