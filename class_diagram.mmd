@@ -1,0 +1,218 @@
+classDiagram
+    %% Data Models (from Models.h)
+    class Station {
+        +int id
+        +string name
+        +Station* next
+    }
+    
+    class Route {
+        +int destID
+        +int weight
+        +Route* next
+    }
+    
+    class Passenger {
+        +int id
+        +string name
+        +Passenger* next
+    }
+    
+    class Vehicle {
+        +int id
+        +string type
+        +Vehicle* next
+    }
+    
+    class LogEntry {
+        +string action
+        +int relatedID
+        +LogEntry* next
+    }
+    
+    %% Core Data Structure Classes
+    class CityGraph {
+        -Station* stations[MAX_STATIONS]
+        -Route* adjList[MAX_STATIONS]
+        -int stationCount
+        +addStation(int, string)
+        +addRoute(int, int, int)
+        +deleteStation(int)
+        +deleteRoute(int, int)
+        +BFS(int)
+        +DFS(int)
+        +Dijkstra(int, int)
+        +MST_Kruskal()
+        +detectCycle() bool
+        +displayAllStations()
+        +getBusiestRoute(int&, int&, int&)
+        +getRouteStatistics(int[], int[], int&)
+        -DFSUtil(int, bool[])
+        -isCyclicUtil(int, bool[], int) bool
+        -findParent(int[], int) int
+        -unionSets(int[], int[], int, int)
+    }
+    
+    class VehicleHashTable {
+        -Vehicle* table[TABLE_SIZE]
+        +insert(int, string)
+        +search(int)
+        +remove(int)
+        -hashFunction(int) int
+    }
+    
+    class PassengerQueue {
+        -Passenger* front
+        -Passenger* rear
+        +enqueue(int, string)
+        +dequeue()
+        +display()
+    }
+    
+    class HistoryStack {
+        -LogEntry* top
+        +push(string, int)
+        +pop() LogEntry
+        +isEmpty() bool
+    }
+    
+    %% Tree Module
+    class TreeNode {
+        +int key
+        +string data
+        +TreeNode* left
+        +TreeNode* right
+    }
+    
+    class BST {
+        -TreeNode* root
+        +insert(int, string)
+        +search(int)
+        +remove(int)
+        +inOrder()
+        -insertHelper(TreeNode*, int, string) TreeNode*
+        -searchHelper(TreeNode*, int) TreeNode*
+        -inOrderHelper(TreeNode*)
+        -deleteHelper(TreeNode*, int) TreeNode*
+        -minValueNode(TreeNode*) TreeNode*
+    }
+    
+    %% Heap Module
+    class HeapNode {
+        +int priority
+        +string data
+        +int id
+    }
+    
+    class MinHeap {
+        -HeapNode* heap
+        -int capacity
+        -int size
+        +insert(int, string, int)
+        +extractMin() HeapNode
+        +getMin() HeapNode
+        +isEmpty() bool
+        +display()
+        -parent(int) int
+        -left(int) int
+        -right(int) int
+        -heapifyUp(int)
+        -heapifyDown(int)
+    }
+    
+    %% Analytics Module
+    class FrequencyNode {
+        +int stationID
+        +int count
+        +FrequencyNode* next
+    }
+    
+    class Analytics {
+        -FrequencyNode* freqTable[100]
+        +recordStationVisit(int)
+        +findMostCrowdedStation(CityGraph&)
+        +displayStationFrequencies()
+        +findBusiestRoute(CityGraph&)
+        +analyzeRouteWeights(CityGraph&)
+        +assignFastestVehicle(MinHeap&)
+        +predictTrafficDensity(MinHeap&)
+        +analyzeDailyUsageTrends(BST&)
+        +generateReport(CityGraph&, MinHeap&, BST&)
+        -hashFunction(int) int
+    }
+    
+    %% Sorting and Searching Module
+    class ComplexityMetrics {
+        +string algorithm
+        +string timeComplexity
+        +string spaceComplexity
+        +double executionTime
+        +int comparisons
+        +int swaps
+        +display()
+    }
+    
+    class SortSearchUtils {
+        +linearSearch(int[], int, int) ComplexityMetrics
+        +binarySearch(int[], int, int, int) ComplexityMetrics
+        +bubbleSort(int[], int) ComplexityMetrics
+        +selectionSort(int[], int) ComplexityMetrics
+        +insertionSort(int[], int) ComplexityMetrics
+        +mergeSort(int[], int) ComplexityMetrics
+        +quickSort(int[], int) ComplexityMetrics
+        +heapSort(int[], int) ComplexityMetrics
+        +printArray(int[], int)
+        -merge(int[], int, int, int)
+        -partition(int[], int, int) int
+        -heapify(int[], int, int)
+    }
+    
+    %% Main Controller (conceptual representation)
+    class MainController {
+        +main()
+        +displayMainMenu()
+    }
+    
+    %% Relationships - Composition (strong ownership)
+    CityGraph *-- Station : "contains array"
+    CityGraph *-- Route : "contains adjacency list"
+    VehicleHashTable *-- Vehicle : "contains hash table"
+    PassengerQueue *-- Passenger : "manages queue"
+    HistoryStack *-- LogEntry : "manages stack"
+    BST *-- TreeNode : "contains tree"
+    MinHeap *-- HeapNode : "contains heap array"
+    Analytics *-- FrequencyNode : "contains frequency table"
+    SortSearchUtils ..> ComplexityMetrics : "returns"
+    
+    %% Relationships - Dependency (uses)
+    Analytics ..> CityGraph : "uses"
+    Analytics ..> MinHeap : "uses"
+    Analytics ..> BST : "uses"
+    CityGraph ..> Station : "uses"
+    CityGraph ..> Route : "uses"
+    VehicleHashTable ..> Vehicle : "uses"
+    PassengerQueue ..> Passenger : "uses"
+    HistoryStack ..> LogEntry : "uses"
+    BST ..> TreeNode : "uses"
+    MinHeap ..> HeapNode : "uses"
+    
+    %% Main Controller dependencies
+    MainController ..> CityGraph : "uses"
+    MainController ..> PassengerQueue : "uses"
+    MainController ..> VehicleHashTable : "uses"
+    MainController ..> HistoryStack : "uses"
+    MainController ..> BST : "uses"
+    MainController ..> MinHeap : "uses"
+    MainController ..> Analytics : "uses"
+    MainController ..> SortSearchUtils : "uses"
+    
+    %% Linked List relationships (self-referential structures)
+    Station --> Station : "next"
+    Route --> Route : "next"
+    Passenger --> Passenger : "next"
+    Vehicle --> Vehicle : "next"
+    LogEntry --> LogEntry : "next"
+    FrequencyNode --> FrequencyNode : "next"
+    TreeNode --> TreeNode : "left"
+    TreeNode --> TreeNode : "right"
+
